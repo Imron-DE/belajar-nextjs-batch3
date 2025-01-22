@@ -11,3 +11,15 @@ export default function Document() {
     </Html>
   );
 }
+
+/* file_document.js dibuat otomatis di folder /src
+
+fungsinya  untuk menyesuaikan 
+
+
+
+
+
+
+
+*/
