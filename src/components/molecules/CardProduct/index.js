@@ -19,7 +19,7 @@ const CardProduct = ({ children }) => {
 function Header({ image }) {
   return (
     <Link href="#">
-      <Image src={image} alt="Card image" className="p-4 rounded-t-lg w-full" width={300} height={300} />
+      <Image src={image} alt="Card image" className="p-4 rounded-t-lg w-full" width={300} height={300} layout="responsive" />
     </Link>
   );
 }
