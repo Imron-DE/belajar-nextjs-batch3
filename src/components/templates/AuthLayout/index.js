@@ -15,21 +15,21 @@ const AuthLayout = ({ title, desc, children, type = "register" }) => {
             <p className="text-sm text-center mt-2">
               {" "}
               Dont have an account?{" "}
-              <Link className="text-blue-500 hover:text-blue-700" href="/register">
+              <Link className="text-blue-500 hover:text-blue-700" href="/login">
                 Login
               </Link>
             </p>
           ) : (
             <p className="text-sm text-center mt-2">
               Already have an account?{" "}
-              <Link className="text-blue-500 hover:text-blue-700" href="/login">
+              <Link className="text-blue-500 hover:text-blue-700" href="/register">
                 Register
               </Link>
             </p>
           )}
 
           {/* Cara 2 */}
-          <p classname="text-sm text-center mt-5">
+          {/* <p classname="text-sm text-center mt-5">
             {" "}
             {type === "register" ? "Already have an account?" : "Dont have an account"}
             {type === "register " && (
@@ -42,7 +42,7 @@ const AuthLayout = ({ title, desc, children, type = "register" }) => {
                 Register
               </Link>
             )}
-          </p>
+          </p> */}
         </div>
       </div>
     </>
