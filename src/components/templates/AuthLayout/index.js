@@ -13,7 +13,6 @@ const AuthLayout = ({ title, desc, children, type = "register" }) => {
           {/* Cara 1 */}
           {type === "register" ? (
             <p className="text-sm text-center mt-2">
-              {" "}
               Dont have an account?{" "}
               <Link className="text-blue-500 hover:text-blue-700" href="/login">
                 Login
