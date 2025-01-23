@@ -29,7 +29,7 @@ const AuthLayout = ({ title, desc, children, type = "register" }) => {
           )}
 
           {/* Cara 2 */}
-          {/* <p classname="text-sm text-center mt-5">
+          <p classname="text-sm text-center mt-5">
             {" "}
             {type === "register" ? "Already have an account?" : "Dont have an account"}
             {type === "register " && (
@@ -42,7 +42,7 @@ const AuthLayout = ({ title, desc, children, type = "register" }) => {
                 Register
               </Link>
             )}
-          </p> */}
+          </p>
         </div>
       </div>
     </>
