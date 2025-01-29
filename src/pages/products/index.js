@@ -1,6 +1,6 @@
 import Button from "@/components/atoms/Button";
 import CardProduct from "@/components/molecules/CardProduct";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { data } from "@/constant/product";
 import BackToTopButton from "@/components/atoms/icons/BackToTopButton";
@@ -31,14 +31,26 @@ const ProductPage = () => {
     }
   };
 
-  // use memo : hooks untuk menympan hasil komputasi (perhitungan ) yang kompleks ke dalam cache
+  // use Callback : hooks untuk menympan fungsi ke dalam cache
   // tujuannya supaya fungsi tsbt tidak perlu dijalankan / dihitung ulang ketika ada perubahan state
-  const cartTotal = useMemo(() => {
+  const calculateTotal = useCallback(() => {
     return cart.reduce((total, item) => {
       const product = data.find((product) => product.id === item.id);
       return total + product.price * item.qty;
     }, 0);
-  }, [cart]);
+  }, [cart]); // defendncy array
+
+  // paggil fungsi useCallback untuk mendapatkan nilai total
+  const cartTotal = calculateTotal();
+
+  // use memo : hooks untuk menympan hasil komputasi (perhitungan ) yang kompleks ke dalam cache
+  // tujuannya supaya fungsi tsbt tidak perlu dijalankan / dihitung ulang ketika ada perubahan state
+  // const cartTotal = useMemo(() => {
+  //   return cart.reduce((total, item) => {
+  //     const product = data.find((product) => product.id === item.id);
+  //     return total + product.price * item.qty;
+  //   }, 0);
+  // }, [cart]);
 
   useEffect(() => {
     if (cart.length > 0) {
@@ -49,7 +61,7 @@ const ProductPage = () => {
       // setTotal(sumTotal);
       localStorage.setItem("cart", JSON.stringify(cart));
     }
-  }, [cart]); // defendency array
+  }, [cart]); // defendncy array
 
   function handleLogout() {
     localStorage.removeItem("username");
