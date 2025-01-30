@@ -35,7 +35,7 @@ function Body({ title, desc }) {
 function Footer({ price, handleAddToCart, id }) {
   return (
     <div className="flex flex-col items-center justify-center px-5 pb-5">
-      <span className="text-2xl font-semibold mb-2 mt-10">{price}</span>
+      <span className="text-2xl font-semibold mb-2 mt-10">{price.toLocaleString("id-ID", { style: "currency", currency: "IDR" })}</span>
       <Button buttonClassname="bg-blue-600 hover:bg-blue-800 text-white w-full mt-4" onClick={() => handleAddToCart(id)}>
         Beli
       </Button>

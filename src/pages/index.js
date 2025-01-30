@@ -1,3 +1,4 @@
+import { useLogin } from "@/hooks/useLogin";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
     height: 0,
     ismobile: false,
   });
+  const username = useLogin();
   // useState : hooks react untuk membuat state ke functional component
   // state : variabel yang digunakan untuk menyimpan data
   // data : variabel yang digunakan untuk menyimpan data awal
@@ -65,6 +67,7 @@ export default function Home() {
         <button onClick={handleChange} className="mt-4 p-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded">
           Change
         </button>
+        <p className="text-6xl font-bold text-white">Hi,{username}</p>
       </div>
     </>
   );
