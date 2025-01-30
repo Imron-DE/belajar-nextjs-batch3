@@ -170,15 +170,18 @@ const ProductPage = ({ data }) => {
   );
 };
 
-// memanggil data di sisi server sebelum akhirnya dirender ke HTML
-// cocok untuk data-data yang dinamis
-export async function getServerSideProps() {
+// SSG(Static Site Generation) adalah teknik yang merener halaman pada saat proses build time (npm run build )
+// dan halaman websitenya bisa di cache ,jadi ketika user balik lagi ke halaman tersebut proses rener nya lebih cepat
+// teknik ini khusu untuk web yang data nya statis /hardcore/datanya tidak berubah
+// build time : proses penyiapan aplikasi di sisi server saat di deploy
+// run time proses setelahh build dimana aplikasi dijalankan di sisi server browser
+export async function getStaticProps() {
   // cara pertama untuk mengambil service satu persatu
   try {
-    const products = await getProducts();
+    // const products = await getProducts();
 
     // cara kedua memanggil bebrapa service sekaligus dengan promise
-    // const [product] = await Promise.all([getProducts()]);
+    const [products] = await Promise.all([getProducts()]);
     const slicedProducts = await products.slice(0, 9);
     return {
       props: {
