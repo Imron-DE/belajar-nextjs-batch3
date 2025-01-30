@@ -170,11 +170,9 @@ const ProductPage = ({ data }) => {
   );
 };
 
-// SSG(Static Site Generation) adalah teknik yang merener halaman pada saat proses build time (npm run build )
-// dan halaman websitenya bisa di cache ,jadi ketika user balik lagi ke halaman tersebut proses rener nya lebih cepat
-// teknik ini khusu untuk web yang data nya statis /hardcore/datanya tidak berubah
-// build time : proses penyiapan aplikasi di sisi server saat di deploy
-// run time proses setelahh build dimana aplikasi dijalankan di sisi server browser
+// ISR (Incremental Static Regeneration) : teknik menggabuungkan SSR dan SSG
+// dimana halaman akan ditampilkan secara statis namun datanya bisa diupdate secara dinamis
+// jika ada perubahan data dari server, halaman akan diupdate secara otomatis
 export async function getStaticProps() {
   // cara pertama untuk mengambil service satu persatu
   try {
@@ -186,6 +184,7 @@ export async function getStaticProps() {
     return {
       props: {
         data: slicedProducts || [],
+        revalidate: 60, // <- fungsi untuk merefresh/mengupdate data setelah 60 detik
       },
     };
   } catch (error) {

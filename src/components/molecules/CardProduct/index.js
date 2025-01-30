@@ -23,7 +23,7 @@ function Header({ image, title }) {
 
 function Body({ title, desc }) {
   return (
-    <div className="px-5 pb-5 h-40">
+    <div className="px-5 pb-5 h-40 min-h-[160px]">
       <Link href="#">
         <h3 className="text-3xl font-bold text-gray-900 line-clamp-2">{title}</h3>
         <p className="mt-3 text-slate-700 text-base text-justify  line-clamp-4 ">{desc}</p>
