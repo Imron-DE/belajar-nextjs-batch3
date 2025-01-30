@@ -7,18 +7,36 @@ import { getProducts } from "@/service/products";
 import { useRouter } from "next/router";
 import { useLogin } from "@/hooks/useLogin";
 import { formatCurrency } from "@/helpers/util/formatCurrency";
+import { useDispatch, useSelector } from "react-redux";
+import { setUsername } from "@/redux/screenSlice/screenSlice";
+import { getCurrentUser } from "@/service/auth";
+// import { useSelector } from "react-redux";
 
 const ProductPage = ({ data }) => {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState([]); // <= direplace sama redux
   // const [total, setTotal] = useState(0);
   const footerRef = useRef();
   const [showBackToTop, setshowBackTOTOP] = useState(false);
   // useref : hooks untuk membuat ref ke element DOM/fungsi untuk mengakses element DOM
   // const [data, setData] = useState([]); //SSR perlu dihapus
   const router = useRouter();
-  const username = useLogin();
+  // const username = useLogin();
+  const dispatch = useDispatch(); // mengirim perubahan kke state global / akses data dari global state
+  const { isLargeScreen, username } = useSelector((state) => state.screen);
+
+  // State dari redux
+  // const cart = useSelector((state) => state.cart.data);
+  // console.log("cart =>", cart);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      dispatch(setUsername(getCurrentUser(token)));
+    } else {
+      router.push("/login");
+    }
+
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
   }, []);
 
@@ -107,6 +125,7 @@ const ProductPage = ({ data }) => {
     <>
       <div className="flex justify-between items-center bg-black text-white font-bold px-5 py-4">
         <h1 className="text-xl">Hi, {username}</h1>
+        {isLargeScreen ? <p className="text-white font-bold text-xl">ukuran desktop</p> : <p className="text-white font-bold text-xl">ukuran mobile</p>}
         <Button buttonClassname={"bg-red-500 hover:bg-red-700"} onClick={handleLogout}>
           Logout
         </Button>
@@ -184,7 +203,7 @@ export async function getStaticProps() {
     return {
       props: {
         data: slicedProducts || [],
-        revalidate: 60, // <- fungsi untuk merefresh/mengupdate data setelah 60 detik
+        // x
       },
     };
   } catch (error) {
