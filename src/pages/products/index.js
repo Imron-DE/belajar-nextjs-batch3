@@ -4,6 +4,8 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image";
 import BackToTopButton from "@/components/atoms/icons/BackToTopButton";
 import { getProducts } from "@/service/products";
+import { getCurrentUser } from "@/service/auth";
+import { useRouter } from "next/router";
 
 const ProductPage = () => {
   const [username, setUsername] = useState("");
@@ -13,6 +15,7 @@ const ProductPage = () => {
   const [showBackToTop, setshowBackTOTOP] = useState(false);
   // useref : hooks untuk membuat ref ke element DOM/fungsi untuk mengakses element DOM
   const [data, setData] = useState([]);
+  const router = useRouter();
   // useEffect  untuk hit API
   useEffect(() => {
     const fetchProducts = async () => {
@@ -28,10 +31,12 @@ const ProductPage = () => {
   }, []);
 
   useEffect(() => {
-    const getUserName = localStorage.getItem("username");
+    const token = localStorage.getItem("token");
 
-    if (getUserName) {
-      setUsername(getUserName);
+    if (token) {
+      setUsername(getCurrentUser(token));
+    } else {
+      router.push("/login");
     }
 
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
@@ -79,9 +84,9 @@ const ProductPage = () => {
   }, [cart]); // defendncy array
 
   function handleLogout() {
-    localStorage.removeItem("username");
-    localStorage.removeItem("password");
-    window.location.href = "/login";
+    localStorage.removeItem("token");
+    localStorage.removeItem("cart");
+    router.push("/login");
   }
 
   useEffect(() => {

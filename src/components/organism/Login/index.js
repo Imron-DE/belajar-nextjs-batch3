@@ -1,20 +1,40 @@
 import Button from "@/components/atoms/Button";
 import InputForm from "@/components/molecules/InputForm";
-import React from "react";
+import { login } from "@/service/auth";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
 
 const Login = () => {
+  const [errorLogin, setErrorLogin] = useState(null);
+  const router = useRouter();
   // event handller untuk simullasi login
-  function HandleLogin(event) {
+  async function HandleLogin(event) {
     // event.preventDefault(); buat mencegah halaman reload
     event.preventDefault();
-    console.log("klik login button");
-    // simpan data dari input ke localstorage
-    localStorage.setItem("username", event.target.username.value);
-    localStorage.setItem("password", event.target.password.value);
 
-    // redirect ke halaman product
-    window.location.href = "/products";
+    const payload = {
+      username: event.target.username.value, // johnd
+      password: event.target.password.value, // m38rmF$
+    };
+
+    try {
+      const res = await login(payload);
+      console.log(res);
+
+      // validasi status
+      if (res.status) {
+        localStorage.setItem("token", res.token);
+        router.push("/products");
+      } else {
+        console.log("Login failed", res.error.data);
+        setErrorLogin(res.error.response.data);
+      }
+    } catch (error) {
+      console.log("Login failed", error);
+      setErrorLogin(error.response);
+    }
   }
+
   return (
     // onsubmit digunakan untuk memanggil event handller
     <form onSubmit={HandleLogin}>
@@ -27,6 +47,7 @@ const Login = () => {
       >
         Login
       </Button>
+      {errorLogin && <p className="text-red-500 text-center text-sm mt-4">{errorLogin}</p>}
     </form>
   );
 };
