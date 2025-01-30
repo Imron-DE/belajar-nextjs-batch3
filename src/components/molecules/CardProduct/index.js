@@ -7,8 +7,8 @@ import Button from "@/components/atoms/Button";
 // Komponen ini berfungsi sebagai pembungkus untuk komponen children
 const CardProduct = ({ children }) => {
   return (
-    <div className="rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 shadow-xl p-1">
-      <div className="w-full max-w-xs rounded-lg bg-white">{children}</div>
+    <div className="rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 shadow-xl p-">
+      <div className="w-full h-full max-w-xs rounded-lg bg-white">{children}</div>
     </div>
   );
 };
@@ -16,7 +16,7 @@ const CardProduct = ({ children }) => {
 function Header({ image, title }) {
   return (
     <Link href="#">
-      <Image src={image} alt={`Gambar produk ${title}`} className="p-4 rounded-t-lg " width={300} height={300} />
+      <Image src={image} alt={`Gambar produk ${title}`} className="p-4 rounded-t-lg w-full aspect-video object-contain " width={300} height={300} />
     </Link>
   );
 }
@@ -25,8 +25,8 @@ function Body({ title, desc }) {
   return (
     <div className="px-5 pb-5 h-40">
       <Link href="#">
-        <h3 className="text-3xl font-bold text-gray-900">{title}</h3>
-        <p className="mt-3 text-slate-700 text-base text-justify py-2 ">{desc}</p>
+        <h3 className="text-3xl font-bold text-gray-900 line-clamp-2">{title}</h3>
+        <p className="mt-3 text-slate-700 text-base text-justify  line-clamp-4 ">{desc}</p>
       </Link>
     </div>
   );
@@ -35,7 +35,7 @@ function Body({ title, desc }) {
 function Footer({ price, handleAddToCart, id }) {
   return (
     <div className="flex flex-col items-center justify-center px-5 pb-5">
-      <span className="text-2xl font-semibold mb-2">{price}</span>
+      <span className="text-2xl font-semibold mb-2 mt-10">{price}</span>
       <Button buttonClassname="bg-blue-600 hover:bg-blue-800 text-white w-full mt-4" onClick={() => handleAddToCart(id)}>
         Beli
       </Button>
