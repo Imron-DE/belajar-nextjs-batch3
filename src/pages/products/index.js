@@ -8,28 +8,15 @@ import { useRouter } from "next/router";
 import { useLogin } from "@/hooks/useLogin";
 import { formatCurrency } from "@/helpers/util/formatCurrency";
 
-const ProductPage = () => {
+const ProductPage = ({ data }) => {
   const [cart, setCart] = useState([]);
   // const [total, setTotal] = useState(0);
   const footerRef = useRef();
   const [showBackToTop, setshowBackTOTOP] = useState(false);
   // useref : hooks untuk membuat ref ke element DOM/fungsi untuk mengakses element DOM
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]); //SSR perlu dihapus
   const router = useRouter();
   const username = useLogin();
-  // useEffect  untuk hit API
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await getProducts();
-        setData(data.slice(0, 8));
-        console.log("data", data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchProducts();
-  }, []);
 
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
@@ -129,7 +116,7 @@ const ProductPage = () => {
         <div className="flex flex-col">
           <h1 className="text-3xl font-bold text-blue-500 uppercase mb-4">Products</h1>
           <div className="flex flex-wrap gap-4">
-            {data.map((item) => (
+            {data?.map((item) => (
               <CardProduct key={item.id}>
                 <CardProduct.Header image={item.image} />
                 <CardProduct.Body title={item.title} desc={item.description} />
@@ -164,7 +151,7 @@ const ProductPage = () => {
             </div>
             <div className="flex justify-between px-4 py-2 border mt-2 font-semibold rounded-lg">
               <span>Total</span>
-              <span>{formatCurrency(cartTotal, "ja-JP", "JPY")}</span> {/* ganti formatCurrency deffault dan llangsung panggil sajaa */}
+              <span>{formatCurrency(cartTotal)}</span> {/* ganti formatCurrency deffault dan llangsung panggil sajaa */}
             </div>
           </div>
         )}{" "}
@@ -182,5 +169,25 @@ const ProductPage = () => {
     </>
   );
 };
+
+// memanggil data di sisi server sebelum akhirnya dirender ke HTML
+// cocok untuk data-data yang dinamis
+export async function getServerSideProps() {
+  // cara pertama untuk mengambil service satu persatu
+  try {
+    const products = await getProducts();
+
+    // cara kedua memanggil bebrapa service sekaligus dengan promise
+    // const [product] = await Promise.all([getProducts()]);
+    const slicedProducts = await products.slice(0, 9);
+    return {
+      props: {
+        data: slicedProducts || [],
+      },
+    };
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export default ProductPage;
