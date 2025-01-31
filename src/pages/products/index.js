@@ -10,6 +10,7 @@ import { formatCurrency } from "@/helpers/util/formatCurrency";
 import { useDispatch, useSelector } from "react-redux";
 import { setUsername } from "@/redux/screenSlice/screenSlice";
 import { getCurrentUser } from "@/service/auth";
+
 // import { useSelector } from "react-redux";
 
 const ProductPage = ({ data }) => {
@@ -121,11 +122,16 @@ const ProductPage = ({ data }) => {
       behavior: "smooth",
     });
   }
+
   return (
     <>
       <div className="flex justify-between items-center bg-black text-white font-bold px-5 py-4">
-        <h1 className="text-xl">Hi, {username}</h1>
-        {isLargeScreen ? <p className="text-white font-bold text-xl">ukuran desktop</p> : <p className="text-white font-bold text-xl">ukuran mobile</p>}
+        <h1 className="text-xl flex items-center space-x-2">
+          <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 text-white font-bold text-lg mr-2">{username?.charAt(0).toUpperCase()}</div>
+          <span>Hi, {username}</span>
+        </h1>
+
+        {isLargeScreen ? <p className="text-red-500 font-bold text-xl">ukuran desktop</p> : <p className="text-red-500 font-bold text-xl">ukuran mobile</p>}
         <Button buttonClassname={"bg-red-500 hover:bg-red-700"} onClick={handleLogout}>
           Logout
         </Button>
@@ -137,8 +143,8 @@ const ProductPage = ({ data }) => {
           <div className="flex flex-wrap gap-4">
             {data?.map((item) => (
               <CardProduct key={item.id}>
-                <CardProduct.Header image={item.image} />
-                <CardProduct.Body title={item.title} desc={item.description} />
+                <CardProduct.Header image={item.image} link={`/products/${item.id}`} />
+                <CardProduct.Body title={item.title} desc={item.description} link={`/products/${item?.id}`} />
                 <CardProduct.Footer price={item.price} handleAddToCart={handleAddToCart} id={item.id} />
               </CardProduct>
             ))}
@@ -146,7 +152,7 @@ const ProductPage = ({ data }) => {
         </div>
         {/* cart */}
         {cart.length > 0 && (
-          <div className="w-2/3">
+          <div className="w-1/3">
             <h1 className="text-3xl font-bold text-blue-500 mb-4 uppercase">Cart</h1>
             <div className="flex flex-col gap-2">
               {cart.map((item) => {

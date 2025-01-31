@@ -8,12 +8,20 @@ export const getProducts = async () => {
   try {
     // request get ke url pake azios.get
     const response = await axios.get(`${api}/products`);
-    console.log("response =>", response);
 
     // kembaliin data product yang disimpan dalam response
     return response.data;
   } catch (error) {
     // error handling
+    throw new Error("failed to fetch data =>", error);
+  }
+};
+
+export const getProductById = async (id) => {
+  try {
+    const res = await axios.get(`${api}/products/${id}`);
+    return res.data;
+  } catch (error) {
     throw new Error("failed to fetch data =>", error);
   }
 };
